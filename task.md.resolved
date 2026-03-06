@@ -1,0 +1,69 @@
+# URL Safety Analysis Feature
+
+## Implementation Plan
+
+- [x] Create [UrlSafetyAnalyzer](file:///d:/Sharan/ModelApp/app/src/main/java/com/example/modelapp/UrlSafetyAnalyzer.kt#51-287) class in Android app
+- [x] Implement scoring logic based on the 22-point checklist
+- [x] Implement URL safety verdict returned
+- [x] Implement [calculateRiskPercentage](file:///d:/Sharan/ModelApp/app/src/main/java/com/example/modelapp/UrlSafetyAnalyzer.kt#53-71) logic
+- [x] Create [UrlMonitorService](file:///d:/Sharan/ModelApp/app/src/main/java/com/example/modelapp/UrlMonitorService.kt#17-83) (AccessibilityService) to intercept URLs
+- [x] Create [accessibility_service_config.xml](file:///d:/Sharan/ModelApp/app/src/main/res/xml/accessibility_service_config.xml)
+- [x] Create [LoginActivity](file:///d:/Sharan/ModelApp/app/src/main/java/com/example/modelapp/LoginActivity.kt#37-147) to block access if risk > 80%
+- [x] Update [AndroidManifest.xml](file:///d:/Sharan/ModelApp/app/src/main/AndroidManifest.xml) with permissions and service declarations
+- [x] Integrate Google Safe Browsing API
+- [x] Move WHOIS API key to [local.properties](file:///d:/Sharan/ModelApp/local.properties) and use `BuildConfig`
+- [x] Add Google Safe Browsing API key to [local.properties](file:///d:/Sharan/ModelApp/local.properties)
+- [x] Implement [isAccessibilityServiceEnabled](file:///d:/Sharan/ModelApp/app/src/main/java/com/example/modelapp/MainActivity.kt#238-263) check in [MainActivity](file:///d:/Sharan/ModelApp/app/src/main/java/com/example/modelapp/MainActivity.kt#38-49)
+- [x] Create Dashboard UI in [MainActivity](file:///d:/Sharan/ModelApp/app/src/main/java/com/example/modelapp/MainActivity.kt#38-49) with "Enable Protection" button
+- [x] Implement redirection to Accessibility Settings
+- [x] Add lifecycle awareness to refresh status on resume
+- [x] Add Firebase and FCM dependencies to [build.gradle.kts](file:///d:/Sharan/ModelApp/build.gradle.kts)
+- [x] Create [MyFirebaseMessagingService](file:///d:/Sharan/ModelApp/app/src/main/java/com/example/modelapp/MyFirebaseMessagingService.kt#18-105) to handle FCM tokens and messages
+- [x] Register FCM service in [AndroidManifest.xml](file:///d:/Sharan/ModelApp/app/src/main/AndroidManifest.xml)
+- [x] Implement unique token generation and "server upload" logic in [LoginActivity](file:///d:/Sharan/ModelApp/app/src/main/java/com/example/modelapp/LoginActivity.kt#37-147)
+- [x] Handle incoming FCM notifications for malicious links
+- [x] Create [Backend/main.py](file:///d:/Sharan/ModelApp/Backend/main.py) (FastAPI entry point)
+- [x] Create [Backend/requirements.txt](file:///d:/Sharan/ModelApp/Backend/requirements.txt)
+- [x] Create [Backend/routes/analyze.py](file:///d:/Sharan/ModelApp/Backend/routes/analyze.py)
+- [x] Create [Backend/services/feature_extractor.py](file:///d:/Sharan/ModelApp/Backend/services/feature_extractor.py)
+- [x] Create [Backend/services/ml_model.py](file:///d:/Sharan/ModelApp/Backend/services/ml_model.py)
+- [x] Create [Backend/services/whois_service.py](file:///d:/Sharan/ModelApp/Backend/services/whois_service.py)
+- [x] Create [Backend/services/dns_service.py](file:///d:/Sharan/ModelApp/Backend/services/dns_service.py)
+- [x] Create [Backend/services/reputation_service.py](file:///d:/Sharan/ModelApp/Backend/services/reputation_service.py)
+- [x] Create [Backend/database/db.py](file:///d:/Sharan/ModelApp/Backend/database/db.py)
+- [x] Create [Backend/database/scan_log.py](file:///d:/Sharan/ModelApp/Backend/database/scan_log.py)
+- [x] Create [Backend/database/device_token.py](file:///d:/Sharan/ModelApp/Backend/database/device_token.py) to store FCM tokens
+- [x] Create [Backend/routes/device_token.py](file:///d:/Sharan/ModelApp/Backend/routes/device_token.py) for `/api/v1/register-token`
+- [x] Update [Backend/main.py](file:///d:/Sharan/ModelApp/Backend/main.py) to include the new router
+- [x] Add `androidx.biometric:biometric` to [build.gradle.kts](file:///d:/Sharan/ModelApp/build.gradle.kts)
+- [x] Create [AuthActivity.kt](file:///d:/Sharan/ModelApp/app/src/main/java/com/example/modelapp/AuthActivity.kt) to handle initial app login
+- [x] Set [AuthActivity](file:///d:/Sharan/ModelApp/app/src/main/java/com/example/modelapp/AuthActivity.kt#31-91) as the `MAIN/LAUNCHER` intent in [AndroidManifest.xml](file:///d:/Sharan/ModelApp/app/src/main/AndroidManifest.xml)
+- [x] Update [LoginActivity.kt](file:///d:/Sharan/ModelApp/app/src/main/java/com/example/modelapp/LoginActivity.kt) (Threat Screen) to hide the blocked URL
+- [x] Add "Proceed Anyway" and "Stay Safe" buttons to [LoginActivity.kt](file:///d:/Sharan/ModelApp/app/src/main/java/com/example/modelapp/LoginActivity.kt)
+- [x] Implement browser redirection in [LoginActivity.kt](file:///d:/Sharan/ModelApp/app/src/main/java/com/example/modelapp/LoginActivity.kt) only after successful auth
+- [x] Ensure [UrlMonitorService.kt](file:///d:/Sharan/ModelApp/app/src/main/java/com/example/modelapp/UrlMonitorService.kt) prevents double-alerts for the same URL action
+- [x] Implement Database Cache check in [Backend/routes/analyze.py](file:///d:/Sharan/ModelApp/Backend/routes/analyze.py) for "instant" shared threats
+- [x] Create [Backend/routes/report.py](file:///d:/Sharan/ModelApp/Backend/routes/report.py) for user-confirmed phishing reports
+- [x] Add "Report Phishing" button to [LoginActivity.kt](file:///d:/Sharan/ModelApp/app/src/main/java/com/example/modelapp/LoginActivity.kt) UI
+- [x] Create [Backend/train_model.py](file:///d:/Sharan/ModelApp/Backend/train_model.py) with 100-estimator Random Forest
+- [x] Train and save `phishing_model.pkl` (Training script provided)
+- [x] Verify ML model prediction in [Backend/services/ml_model.py](file:///d:/Sharan/ModelApp/Backend/services/ml_model.py)
+- [x] **TASK 1: SMS Link Scanning**
+    - [x] Create [SmsReceiver.kt](file:///d:/Sharan/ModelApp/app/src/main/java/com/example/modelapp/SmsReceiver.kt) with URL detection & backend analysis
+    - [x] Register [SmsReceiver](file:///d:/Sharan/ModelApp/app/src/main/java/com/example/modelapp/SmsReceiver.kt#20-108) and SMS permissions in [AndroidManifest.xml](file:///d:/Sharan/ModelApp/app/src/main/AndroidManifest.xml)
+- [x] **TASK 2: Admin Dashboard**
+    - [x] Create [Backend/templates/dashboard.html](file:///d:/Sharan/ModelApp/Backend/templates/dashboard.html) (Dark theme)
+    - [x] Create [Backend/routes/dashboard.py](file:///d:/Sharan/ModelApp/Backend/routes/dashboard.py) with stats & HTML serving
+    - [x] Register dashboard router in [main.py](file:///d:/Sharan/ModelApp/Backend/main.py)
+- [x] **TASK 3: Visual Phishing Detection**
+    - [x] Create [Backend/services/visual_analyzer.py](file:///d:/Sharan/ModelApp/Backend/services/visual_analyzer.py)
+    - [x] Integrate visual risk score into `/api/v1/analyze-url`
+- [x] **TASK 4: Obfuscated URL Detection**
+    - [x] Add detection for shorteners, IPs, Base64, etc. in [feature_extractor.py](file:///d:/Sharan/ModelApp/Backend/services/feature_extractor.py)
+- [x] **TASK 5: Continuous Learning**
+    - [x] Create [Backend/routes/retrain.py](file:///d:/Sharan/ModelApp/Backend/routes/retrain.py) for `/api/v1/retrain`
+    - [x] Update [Backend/main.py](file:///d:/Sharan/ModelApp/Backend/main.py) with retrain router
+- [x] **PHASE 2 MAINTENANCE & POLISH**
+    - [x] Audit Android app for runtime permissions (SMS)
+    - [x] Optimize notification channels and regex in [SmsReceiver](file:///d:/Sharan/ModelApp/app/src/main/java/com/example/modelapp/SmsReceiver.kt#20-108)
+    - [x] Align backend ML model paths for retrain integration
